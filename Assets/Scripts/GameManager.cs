@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
     public GameObject demon;
     public GameObject physical;
     public GameObject goo;
+
+    public List<Item> inventory = new List<Item>();
 
     private Sleepy sleepy;
     private Player player;
@@ -17,6 +21,15 @@ public class GameManager : MonoBehaviour
     private int score;
 
     private float spawnDelay;
+
+    void Awake()
+    {
+        if (instance != null)
+        {
+            Debug.Log("Multiple GameManager instances");
+        }
+        instance = this;
+    }
 
     IEnumerator Start()
     {
