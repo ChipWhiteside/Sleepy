@@ -6,11 +6,19 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public GameObject demon;
-    public GameObject physical;
-    public GameObject goo;
+    //public GameObject demon;
+    //public GameObject physical;
+    //public GameObject phantom;
+    public GameObject[] nightmarePrefabs = new GameObject[4];
+
+    //public NightmareObject demonObj;
+
+    public Item defaultPhysical;
+    public Item defaultPyro;
+    public Item defaultSpiritual;
 
     public List<Item> inventory = new List<Item>();
+    public Item selectedItem;
 
     private Sleepy sleepy;
     private Player player;
@@ -18,7 +26,7 @@ public class GameManager : MonoBehaviour
     private int nightmares;
     private float time;
 
-    private int score;
+    //private int score;
 
     private float spawnDelay;
 
@@ -33,12 +41,21 @@ public class GameManager : MonoBehaviour
 
     IEnumerator Start()
     {
+        GameEvents.instance.onGameOver += GameOver;
+
         sleepy = Sleepy.instance;
         player = Player.instance;
         nightmares = 0;
         time = 0f;
-        score = 0;
+        //score = 0;
         spawnDelay = 3f;
+
+        //inventory.Add(defaultPhysical);
+        //inventory.Add(defaultPyro);
+        //inventory.Add(defaultSpiritual);
+        GameEvents.instance.UpdateInv();
+
+        selectedItem = inventory[2];
 
         while (true)
         {
@@ -71,7 +88,25 @@ public class GameManager : MonoBehaviour
             nightmareYSpawn = 0 - nightmareYSpawn;
         Debug.Log("Y spawn: " + nightmareYSpawn);
 
-        GameObject d = GameObject.Instantiate(demon, new Vector3(nightmareXSpawn, nightmareYSpawn, 0), new Quaternion(0, 0, 0, 0));
+        int nightmareIndex = (int) Random.Range(0, nightmarePrefabs.Length);
+        Debug.Log("nightmareIndex: " + nightmareIndex);
+
+        GameObject d = GameObject.Instantiate(nightmarePrefabs[nightmareIndex], new Vector3(nightmareXSpawn, nightmareYSpawn, 0), new Quaternion(0, 0, 0, 0));
         d.GetComponent<Nightmare>().sleepy = sleepy.transform;
+        //d.GetComponent<Nightmare>().nightmareObj = demonObj;
+    }
+
+    void GameOver()
+    {
+        Debug.Log("Game Over");
+        Debug.Log("Time survived: " + time);
+        Debug.Log("Nightmares Defeated: " + player.nightmareDefeated);
+        Debug.Log("Score: " + time * 20 + player.nightmareDefeated * 100);
+    }
+
+    public void InvSelectionChanged(int invIndex)
+    {
+        if (invIndex < inventory.Count)
+            selectedItem = inventory[invIndex];
     }
 }

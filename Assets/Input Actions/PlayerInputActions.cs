@@ -41,6 +41,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""NumKeys"",
+                    ""type"": ""Button"",
+                    ""id"": ""59662a04-ce3d-43e8-8550-8b5ee13cdb81"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -120,6 +128,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""action"": ""Use"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab6e002b-c40d-42a8-9b8d-3e0552e1d7ab"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mouse & Keyboard"",
+                    ""action"": ""NumKeys"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -175,6 +194,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Playing_Movement = m_Playing.FindAction("Movement", throwIfNotFound: true);
         m_Playing_Inventory = m_Playing.FindAction("Inventory", throwIfNotFound: true);
         m_Playing_Use = m_Playing.FindAction("Use", throwIfNotFound: true);
+        m_Playing_NumKeys = m_Playing.FindAction("NumKeys", throwIfNotFound: true);
         // Shop
         m_Shop = asset.FindActionMap("Shop", throwIfNotFound: true);
         m_Shop_Newaction = m_Shop.FindAction("New action", throwIfNotFound: true);
@@ -230,6 +250,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Playing_Movement;
     private readonly InputAction m_Playing_Inventory;
     private readonly InputAction m_Playing_Use;
+    private readonly InputAction m_Playing_NumKeys;
     public struct PlayingActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -237,6 +258,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Playing_Movement;
         public InputAction @Inventory => m_Wrapper.m_Playing_Inventory;
         public InputAction @Use => m_Wrapper.m_Playing_Use;
+        public InputAction @NumKeys => m_Wrapper.m_Playing_NumKeys;
         public InputActionMap Get() { return m_Wrapper.m_Playing; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -255,6 +277,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Use.started -= m_Wrapper.m_PlayingActionsCallbackInterface.OnUse;
                 @Use.performed -= m_Wrapper.m_PlayingActionsCallbackInterface.OnUse;
                 @Use.canceled -= m_Wrapper.m_PlayingActionsCallbackInterface.OnUse;
+                @NumKeys.started -= m_Wrapper.m_PlayingActionsCallbackInterface.OnNumKeys;
+                @NumKeys.performed -= m_Wrapper.m_PlayingActionsCallbackInterface.OnNumKeys;
+                @NumKeys.canceled -= m_Wrapper.m_PlayingActionsCallbackInterface.OnNumKeys;
             }
             m_Wrapper.m_PlayingActionsCallbackInterface = instance;
             if (instance != null)
@@ -268,6 +293,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Use.started += instance.OnUse;
                 @Use.performed += instance.OnUse;
                 @Use.canceled += instance.OnUse;
+                @NumKeys.started += instance.OnNumKeys;
+                @NumKeys.performed += instance.OnNumKeys;
+                @NumKeys.canceled += instance.OnNumKeys;
             }
         }
     }
@@ -319,6 +347,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnUse(InputAction.CallbackContext context);
+        void OnNumKeys(InputAction.CallbackContext context);
     }
     public interface IShopActions
     {

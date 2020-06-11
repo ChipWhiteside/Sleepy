@@ -32,4 +32,10 @@ public class ItemSlot : MonoBehaviour
         icon.enabled = false;
         icon.sprite = null;
     }
+
+    public void OnClick()
+    {
+        Debug.Log("Inv slot " + itemSlot + " selected");
+        GameManager.instance.InvSelectionChanged(itemSlot);
+    }
 }

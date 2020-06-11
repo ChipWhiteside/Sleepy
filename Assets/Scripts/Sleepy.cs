@@ -7,6 +7,7 @@ public class Sleepy : MonoBehaviour
     public static Sleepy instance;
 
     public int fear;        // How many nightmares have entered Sleepy's dream
+    public int maxFear;
     public float speed;
     public float spawnRadius;
 
@@ -35,6 +36,11 @@ public class Sleepy : MonoBehaviour
             RandomYChange();
         }
         transform.position += (Vector3.right + ychange/2) * speed * Time.deltaTime;
+
+        if (fear >= maxFear)
+        {
+            GameEvents.instance.GameOver();
+        }
     }
 
     void RandomYChange()

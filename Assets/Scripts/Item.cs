@@ -7,9 +7,11 @@ public class Item : ScriptableObject
     public ItemClass iclass;
     public Sprite icon = null;
 
-    public void Use()
+    public void Use(Collider2D collider)
     {
         Debug.Log("Used " + name + " (" + iclass + " class)");
+
+        //check if itemclass matches nightmare class
     }
 }
 

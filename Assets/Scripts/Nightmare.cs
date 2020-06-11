@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator))]
 public class Nightmare : MonoBehaviour
 {
-
+    public NightmareObject nightmareObj;
     public Transform sleepy;
     public float speed;
 
+    private SpriteRenderer sr;
+    private Animator anim;
+
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 
+        sr.sprite = nightmareObj.icon;
+        //anim.animation = nightmareObj.anim;
     }
 
     void Update()
@@ -24,5 +33,16 @@ public class Nightmare : MonoBehaviour
     void SpeedIncrease()
     {
         speed += .1f;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Sleepy")
+        {
+            Debug.Log("Nightmare in sleepy's dream");
+            nightmareObj.HauntSleepy();
+            Sleepy.instance.fear++;
+            GameObject.Destroy(gameObject);
+        }
     }
 }

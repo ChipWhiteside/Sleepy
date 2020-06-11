@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public static Player instance;
 
     public float speed;
+    public int nightmareDefeated;
 
     private PlayerInputActions actions;
 
@@ -132,7 +133,14 @@ public class Player : MonoBehaviour
         if (nightmaresClose.Contains(nightmare))
         {
             Debug.Log("Nightmare close clicked");
-            GameObject.Destroy(nightmare);
+            if (((int) nightmare.GetComponent<Nightmare>().nightmareObj.nclass).Equals((int) GameManager.instance.selectedItem.iclass))
+            {
+                Debug.Log("Item matches nightmare type");
+                GameObject.Destroy(nightmare);
+                nightmareDefeated++;
+            }
+            else
+                Debug.Log("Item DOES NOT match nightmare type");
         }
     }
 }
